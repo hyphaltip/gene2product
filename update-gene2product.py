@@ -43,8 +43,12 @@ with open(os.path.join(currentdir, 'ncbi_cleaned_gene_products.txt'), 'rU') as d
 with open(sys.argv[1], 'rU') as update:
     for line in update:
         line = line.strip()
-        if line.startswith('#'):
+        if line.startswith('#') or len(line) == 0:
             continue
+        row = line.split('\t')
+        if len(row) != 2:
+            print("cannot parse '%s' into two cols" % (line))
+            exit()
         name, product = line.split('\t')
         #do some checks here of product name
         if product == 'protein '+name or product == name+' protein' or product == name.lower()+' protein':
